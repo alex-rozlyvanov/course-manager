@@ -1,0 +1,24 @@
+{
+  "id": "e48fa343-7660-46e9-a73c-3877775b4f55",
+  "request": {
+    "urlPattern": "/api/authenticator/users/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "matches": "Bearer ([\\.\\-\\_a-zA-Z0-9]+)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"id\":\"00000000-0000-0000-0000-000000000001\",\"username\":\"XTRUKHAYOJVWDZVRVOZY\",\"lastName\":\"AWHIUKKRSCPQDJJSWYNO\",\"enabled\":true,\"roles\":[{\"id\":\"16014cc0-8742-4614-afcd-359893cafff1\",\"title\":\"STUDENT\"},{\"id\":\"8e226848-3aa2-439f-8ccd-7425a8bf7213\",\"title\":\"ADMIN\"},{\"id\":\"20021d5a-4540-423a-a133-6bca1126a283\",\"title\":\"INSTRUCTOR\"}]}",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": [
+      "response-template",
+      "spring-cloud-contract"
+    ]
+  },
+  "uuid": "e48fa343-7660-46e9-a73c-3877775b4f55"
+}

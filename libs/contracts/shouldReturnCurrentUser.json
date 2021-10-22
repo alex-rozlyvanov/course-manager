@@ -1,0 +1,21 @@
+{
+  "id": "1817efe9-db4e-4cc3-a38d-429fa5806303",
+  "request": {
+    "url": "/api/authenticator/users/current",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "matches": "Bearer ([\\.\\-\\_a-zA-Z0-9]+)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"id\":\"8c9b0336-0947-463d-bda2-e8575dc2ea44\",\"username\":\"IXXRSQHWFAURJKXSNTCT\",\"lastName\":\"YSNIDPIIUWXQPSGMVDUN\",\"enabled\":true,\"roles\":[{\"id\":\"81d67043-f966-4ef0-b060-8f01a67a9fc8\",\"title\":\"FSJSUDYLDJRWRBHYPQGX\"}]}",
+    "transformers": [
+      "response-template",
+      "spring-cloud-contract"
+    ]
+  },
+  "uuid": "1817efe9-db4e-4cc3-a38d-429fa5806303"
+}
