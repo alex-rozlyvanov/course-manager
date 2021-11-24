@@ -1,7 +1,7 @@
 package com.goals.course.manager.service.filtering.course.implementation;
 
-import com.goals.course.manager.CourseFilters;
 import com.goals.course.manager.dto.UserDTO;
+import com.goals.course.manager.enums.CourseFilters;
 import com.goals.course.manager.exception.FilteringIsNotAllowed;
 import com.goals.course.manager.service.filtering.course.CourseFilteringService;
 import com.goals.course.manager.service.filtering.course.model.CourseFilter;

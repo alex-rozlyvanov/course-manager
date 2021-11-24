@@ -1,10 +1,10 @@
 package com.goals.course.manager.controller;
 
-import com.goals.course.manager.CourseFilters;
 import com.goals.course.manager.dto.AssignInstructorRequest;
 import com.goals.course.manager.dto.CourseDTO;
 import com.goals.course.manager.dto.LessonDTO;
 import com.goals.course.manager.dto.UserDTO;
+import com.goals.course.manager.enums.CourseFilters;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.goals.course.manager.service.implementation;
 
-import com.goals.course.manager.CourseFilters;
 import com.goals.course.manager.dao.entity.Course;
 import com.goals.course.manager.dao.repository.CourseRepository;
 import com.goals.course.manager.dto.CourseDTO;
+import com.goals.course.manager.enums.CourseFilters;
 import com.goals.course.manager.exception.CourseNotFoundException;
 import com.goals.course.manager.mapper.CourseMapper;
 import com.goals.course.manager.service.CourseService;

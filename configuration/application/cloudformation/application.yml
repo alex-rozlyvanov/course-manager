@@ -1,0 +1,182 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Starter template for ECS
+
+Parameters:
+  VpcId:
+    Type: String
+    Description: Id of VPC stack to build off of
+  EcsClusterStack:
+    Type: String
+    Description: Name of ECS Cluster stack to build off of
+    Default: course-ecs-cluster
+  Environment:
+    Description: Specify the Environment of the stack.
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - test
+      - prod
+  Image:
+    Type: String
+    Description: URI of image you would like to use
+
+Resources:
+  DefaultSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 5444
+          ToPort: 5444
+          CidrIp: 0.0.0.0/0
+
+  FargateService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Fn::ImportValue: !Sub ${EcsClusterStack}-ecs-cluster
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      ServiceName: course-manager
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !Ref DefaultSecurityGroup
+          Subnets:
+            - Fn::ImportValue: !Sub ${EcsClusterStack}-private-subnet-1
+      TaskDefinition: !Ref FargateServiceTaskDefinition
+
+  FargateServiceLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 7
+
+  FargateServiceTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: course-manager
+          Essential: true
+          Image: !Ref Image
+          Secrets:
+            - Name: DB_USERNAME
+              ValueFrom: !Ref DBUsernameSecret
+            - Name: DB_PASSWORD
+              ValueFrom: !Ref DBPasswordSecret
+          Environment:
+            - Name: SPRING_PROFILES_ACTIVE
+              Value: !Ref Environment
+            - Name: DB_HOST
+              Value: !GetAtt DBInstance.Endpoint.Address
+            - Name: DB_PORT
+              Value: !GetAtt DBInstance.Endpoint.Port
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref FargateServiceLogGroup
+              awslogs-stream-prefix: course-manager-container
+              awslogs-region: !Ref AWS::Region
+          PortMappings:
+            - ContainerPort: 8080
+              HostPort: 8080
+              Protocol: tcp
+      Cpu: 256
+      ExecutionRoleArn: !Ref DefaultRole
+      Memory: 512
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn: !Ref DefaultRole
+
+  DefaultRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: course-manager-role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+                - ecs.amazonaws.com
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: Policy-to-read-course-manager-secrets
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource:
+                  - !Ref DBUsernameSecret
+                  - !Ref DBPasswordSecret
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonECS_FullAccess
+
+  DBUsernameSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        PasswordLength: 8
+        ExcludePunctuation: true
+        IncludeSpace: false
+        ExcludeNumbers: true
+        ExcludeUppercase: true
+      Name: course/manager/db/username
+
+  DBPasswordSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        PasswordLength: 16
+        ExcludePunctuation: true
+        IncludeSpace: false
+      Name: course/manager/db/password
+
+  DBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBName: course_manager
+      Port: 5444
+      StorageType: gp2
+      AllocatedStorage: 20
+      MaxAllocatedStorage: 21
+      DBInstanceClass: db.t3.micro
+      Engine: postgres
+      DBSubnetGroupName: !Ref RDSDBSubnetGroup
+      MasterUsername: !Sub "{{resolve:secretsmanager:${DBUsernameSecret}}}"
+      MasterUserPassword: !Sub "{{resolve:secretsmanager:${DBPasswordSecret}}}"
+      BackupRetentionPeriod: 0
+      VPCSecurityGroups:
+        - !Ref DefaultSecurityGroup
+
+  RDSDBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet Group for course postgres database
+      DBSubnetGroupName: !Sub "${AWS::Region}-course-database-subnet-group"
+      SubnetIds:
+        - Fn::ImportValue: !Sub "${EcsClusterStack}-private-subnet-1"
+        - Fn::ImportValue: !Sub "${EcsClusterStack}-private-subnet-2"
+
+Outputs:
+  FargateServiceName:
+    Description: A reference to the created Fargate Service
+    Value: !GetAtt FargateService.Name
+    Export:
+      Name: !Sub ${AWS::StackName}-fargate-service-name

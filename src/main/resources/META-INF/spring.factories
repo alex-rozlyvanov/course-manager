@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.goals.course.manager.configuration.dockersecret.DockerSecretsEnvPostProcessor

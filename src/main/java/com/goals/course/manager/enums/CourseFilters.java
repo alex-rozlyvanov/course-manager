@@ -1,4 +1,4 @@
-package com.goals.course.manager;
+package com.goals.course.manager.enums;
 
 import com.goals.course.manager.dao.enums.Roles;
 import org.springframework.security.core.Authentication;

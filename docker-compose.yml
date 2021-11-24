@@ -36,4 +36,3 @@ networks:
   course_manager:
     name: course_manager
     driver: bridge
-

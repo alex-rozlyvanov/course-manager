@@ -1,11 +1,11 @@
 package com.goals.course.manager.controller.implementation;
 
-import com.goals.course.manager.CourseFilters;
 import com.goals.course.manager.controller.CourseController;
 import com.goals.course.manager.dto.AssignInstructorRequest;
 import com.goals.course.manager.dto.CourseDTO;
 import com.goals.course.manager.dto.LessonDTO;
 import com.goals.course.manager.dto.UserDTO;
+import com.goals.course.manager.enums.CourseFilters;
 import com.goals.course.manager.mapper.CourseMapper;
 import com.goals.course.manager.mapper.LessonMapper;
 import com.goals.course.manager.service.*;

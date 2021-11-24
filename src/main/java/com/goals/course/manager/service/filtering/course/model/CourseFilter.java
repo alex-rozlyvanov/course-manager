@@ -1,6 +1,6 @@
 package com.goals.course.manager.service.filtering.course.model;
 
-import com.goals.course.manager.CourseFilters;
+import com.goals.course.manager.enums.CourseFilters;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;

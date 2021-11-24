@@ -20,16 +20,16 @@ public class GlobalConfig {
 
     @Bean
     @LoadBalanced
-    public RestTemplate restTemplate(final TokenInterceptor testInterceptor) {
+    public RestTemplate restTemplate(final TokenInterceptor tokenInterceptor) {
         final var restTemplate = new RestTemplate();
         final var interceptors = restTemplate.getInterceptors();
-        interceptors.add(testInterceptor);
+        interceptors.add(tokenInterceptor);
         return restTemplate;
     }
 
     @Bean
     @RequestScope
-    public TokenInterceptor testInterceptor(final HttpServletRequest request) {
+    public TokenInterceptor tokenInterceptor(final HttpServletRequest request) {
         return new TokenInterceptor(request.getHeader("Authorization"));
     }
 
