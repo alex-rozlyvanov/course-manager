@@ -5,14 +5,15 @@ services:
     ports:
       - 8081:8081
       - 5006:5006
-    command: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
     environment:
-      - "SPRING_PROFILES_ACTIVE=local-docker"
+      SPRING_PROFILES_ACTIVE: "local-docker"
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
     depends_on:
       - postgres_db
     networks:
       - course_local
       - course_manager
+
   postgres_db:
     image: "postgres:14.0-alpine"
     #    volumes:

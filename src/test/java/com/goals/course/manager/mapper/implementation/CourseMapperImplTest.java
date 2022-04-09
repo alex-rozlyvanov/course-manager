@@ -6,7 +6,7 @@ import com.goals.course.manager.dao.entity.Lesson;
 import com.goals.course.manager.dto.CourseDTO;
 import com.goals.course.manager.dto.InstructorDTO;
 import com.goals.course.manager.dto.LessonDTO;
-import com.goals.course.manager.mapper.InstructorsMapper;
+import com.goals.course.manager.mapper.InstructorMapper;
 import com.goals.course.manager.mapper.LessonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 class CourseMapperImplTest {
 
     @Mock
-    private InstructorsMapper mockInstructorsMapper;
+    private InstructorMapper mockInstructorsMapper;
 
     @Mock
     private LessonMapper mockLessonMapper;

@@ -8,6 +8,7 @@ import com.goals.course.manager.exception.CourseNotFoundException;
 import com.goals.course.manager.service.CourseAssigmentService;
 import com.goals.course.manager.service.InstructorService;
 import com.goals.course.manager.service.StudentService;
+import com.goals.course.manager.service.kafka.CourseAssignmentEventProducer;
 import com.goals.course.manager.service.validation.CourseAssignmentValidation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class CourseAssigmentServiceImpl implements CourseAssigmentService {
     private final CourseStudentRepository courseStudentRepository;
     private final CourseInstructorRepository courseInstructorRepository;
     private final CourseAssignmentValidation courseAssignmentValidation;
+    private final CourseAssignmentEventProducer courseAssignmentEventProducer;
 
     @Override
     @Transactional
@@ -55,8 +57,9 @@ public class CourseAssigmentServiceImpl implements CourseAssigmentService {
                 .setStudent(student)
                 .setCourseIsCompleted(false);
 
-        courseStudentRepository.save(courseStudent);
+        final var saved = courseStudentRepository.save(courseStudent);
         log.info("Student '{}' assigned to the course '{}'", student.getId(), course.getId());
+        courseAssignmentEventProducer.generateStudentAssignmentEventAsync(saved);
     }
 
     @Override
@@ -80,7 +83,8 @@ public class CourseAssigmentServiceImpl implements CourseAssigmentService {
                 .setCourse(course)
                 .setInstructor(instructor);
 
-        courseInstructorRepository.save(courseStudent);
+        final var saved = courseInstructorRepository.save(courseStudent);
         log.info("Instructor '{}' assigned to the course '{}'", instructor.getId(), course.getId());
+        courseAssignmentEventProducer.generateInstructorAssignmentEventAsync(saved);
     }
 }

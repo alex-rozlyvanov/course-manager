@@ -4,13 +4,13 @@
 
 ### Main technologies:
 
-- Gradle 7.2
+- Gradle 7.3.3
 - Java 17
 - Postgres 14
-- Spring Boot 2.5.5
-- Spring Cloud 2020.0.3
+- Spring Boot 2.6.3
+- Spring Cloud 2021.0.0
 - Netflix Eureka Client
-- Flyway 7.7+
+- Flyway 8.0+
 - Lombok 1.18+
 - Slf4j
 

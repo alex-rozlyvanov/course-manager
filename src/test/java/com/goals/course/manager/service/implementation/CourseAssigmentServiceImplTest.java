@@ -7,6 +7,7 @@ import com.goals.course.manager.dao.repository.CourseStudentRepository;
 import com.goals.course.manager.exception.CourseNotFoundException;
 import com.goals.course.manager.service.InstructorService;
 import com.goals.course.manager.service.StudentService;
+import com.goals.course.manager.service.kafka.CourseAssignmentEventProducer;
 import com.goals.course.manager.service.validation.CourseAssignmentValidation;
 import com.goals.course.manager.service.validation.implementation.ValidationResult;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,8 @@ class CourseAssigmentServiceImplTest {
     private CourseAssignmentValidation mockCourseAssignmentValidation;
     @Mock
     private InstructorService mockInstructorService;
+    @Mock
+    private CourseAssignmentEventProducer mockCourseAssignmentEventProducer;
     @InjectMocks
     private CourseAssigmentServiceImpl service;
 
@@ -122,6 +125,26 @@ class CourseAssigmentServiceImplTest {
         assertThat(courseStudent.getCourse()).isSameAs(course);
         assertThat(courseStudent.getStudent()).isSameAs(student);
         assertThat(courseStudent.getCourseIsCompleted()).isFalse();
+    }
+
+    @Test
+    void assignStudentToCourse_callGenerateEventAsync() {
+        // GIVEN
+        final var course = new Course().setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
+        when(mockCourseRepository.findById(any())).thenReturn(of(course));
+
+        final var student = new Student().setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        when(mockStudentService.getOrCreateStudent(any())).thenReturn(student);
+        when(mockCourseAssignmentValidation.canStudentTakeACourse(any())).thenReturn(ValidationResult.valid());
+
+        final var courseStudent = new CourseStudent().setId(UUID.fromString("00000000-0000-0000-0000-000000000027"));
+        when(mockCourseStudentRepository.save(any())).thenReturn(courseStudent);
+
+        // WHEN
+        service.assignStudentToCourse(null, null);
+
+        // THEN
+        verify(mockCourseAssignmentEventProducer).generateStudentAssignmentEventAsync(courseStudent);
     }
 
     @Test
@@ -236,6 +259,24 @@ class CourseAssigmentServiceImplTest {
         final var actual = captor.getValue();
         assertThat(actual.getCourse()).isSameAs(course);
         assertThat(actual.getInstructor()).isSameAs(newInstructor);
+    }
+
+    @Test
+    void assignInstructorToCourse_callGenerateEventAsync() {
+        // GIVEN
+        final var course = new Course().setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        when(mockCourseRepository.findById(any())).thenReturn(of(course));
+        final var newInstructor = buildInstructor();
+        when(mockInstructorService.getOrCreateInstructorById(any())).thenReturn(newInstructor);
+
+        final var courseInstructor = new CourseInstructor().setId(UUID.fromString("00000000-0000-0000-0000-000000000028"));
+        when(mockCourseInstructorRepository.save(any())).thenReturn(courseInstructor);
+
+        // WHEN
+        service.assignInstructorToCourse(null, null);
+
+        // THEN
+        verify(mockCourseAssignmentEventProducer).generateInstructorAssignmentEventAsync(courseInstructor);
     }
 
     @Test

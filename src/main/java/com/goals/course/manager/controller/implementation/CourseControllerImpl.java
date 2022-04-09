@@ -12,6 +12,7 @@ import com.goals.course.manager.service.*;
 import com.goals.course.manager.service.filtering.course.CourseFilteringService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,6 +57,7 @@ public class CourseControllerImpl implements CourseController {
 
     @Override
     @GetMapping("/{courseId}")
+    @Transactional
     public CourseDTO getCourseById(@PathVariable("courseId") final UUID courseId) {
         final var course = courseService.getCourseById(courseId);
 

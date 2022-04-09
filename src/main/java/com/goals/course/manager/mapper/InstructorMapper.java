@@ -5,9 +5,8 @@ import com.goals.course.manager.dto.InstructorDTO;
 
 import java.util.Set;
 
-public interface InstructorsMapper {
+public interface InstructorMapper {
     Set<CourseInstructor> mapToCourseInstructorSet(final Set<InstructorDTO> instructorsDTOSet);
 
     Set<InstructorDTO> mapToInstructorDTOSet(final Set<CourseInstructor> instructors);
 }
-

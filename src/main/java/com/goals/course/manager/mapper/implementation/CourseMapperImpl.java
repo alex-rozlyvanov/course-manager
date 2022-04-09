@@ -4,7 +4,7 @@ import com.goals.course.manager.dao.entity.Course;
 import com.goals.course.manager.dto.CourseDTO;
 import com.goals.course.manager.dto.LessonDTO;
 import com.goals.course.manager.mapper.CourseMapper;
-import com.goals.course.manager.mapper.InstructorsMapper;
+import com.goals.course.manager.mapper.InstructorMapper;
 import com.goals.course.manager.mapper.LessonMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import static java.util.Objects.nonNull;
 @RequiredArgsConstructor
 public class CourseMapperImpl implements CourseMapper {
 
-    private final InstructorsMapper instructorsMapper;
+    private final InstructorMapper instructorsMapper;
     private final LessonMapper lessonMapper;
     @Value("${app.course.averageGradeToPassACourse:80}")
     private Integer averageGradeToPassACourse;

@@ -1,0 +1,35 @@
+{
+  "namespace": "com.goals.course.avro",
+  "type": "record",
+  "name": "CourseAssignmentEventAvro",
+  "fields": [
+    {
+      "name": "id",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "name": "userId",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "name": "role",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "name": "courseId",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  ]
+}

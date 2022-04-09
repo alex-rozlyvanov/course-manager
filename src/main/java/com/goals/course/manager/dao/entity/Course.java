@@ -30,12 +30,12 @@ public class Course {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private Set<CourseInstructor> instructors = new HashSet<>();
 
     @OneToMany(mappedBy = "course")
     private Set<CourseStudent> students = new HashSet<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private Set<Lesson> lessons = new HashSet<>();
 }
