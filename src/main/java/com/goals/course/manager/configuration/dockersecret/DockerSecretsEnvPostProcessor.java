@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class DockerSecretsEnvPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    @Override
+
     public void postProcessEnvironment(final ConfigurableEnvironment env,
                                        final SpringApplication application) {
         final var secretsDirectory = Paths.get("/run/secrets");
@@ -59,7 +59,7 @@ public class DockerSecretsEnvPostProcessor implements EnvironmentPostProcessor, 
         }
     }
 
-    @Override
+
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
     }

@@ -1,6 +1,5 @@
 package com.goals.course.manager.service.validation;
 
-import com.goals.course.manager.service.validation.implementation.ValidationResult;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,7 +16,7 @@ class ValidationResultTest {
         // THEN
         assertThat(result.isValid()).isTrue();
         assertThat(result.isNotValid()).isFalse();
-        assertThat(result.getMessage()).isNull();
+        assertThat(result.message()).isNull();
     }
 
     @Test
@@ -30,7 +29,7 @@ class ValidationResultTest {
         // THEN
         assertThat(result.isValid()).isFalse();
         assertThat(result.isNotValid()).isTrue();
-        assertThat(result.getMessage()).isEqualTo("test message");
+        assertThat(result.message()).isEqualTo("test message");
     }
 
 }

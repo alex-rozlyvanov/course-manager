@@ -2,13 +2,13 @@ package com.goals.course.manager.dto;
 
 import com.goals.course.manager.dao.enums.Roles;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 import java.util.UUID;
 
-@Getter
+@Data
 @Builder
 @Jacksonized
 public class UserDTO {

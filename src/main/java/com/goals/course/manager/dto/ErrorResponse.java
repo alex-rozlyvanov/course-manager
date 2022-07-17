@@ -14,4 +14,5 @@ public final class ErrorResponse {
     private final int status;
     private final String error;
     private final String path;
+    private final String requestId;
 }

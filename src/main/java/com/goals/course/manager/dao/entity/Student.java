@@ -19,6 +19,6 @@ public class Student {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private Set<CourseStudent> courses = new HashSet<>();
 }

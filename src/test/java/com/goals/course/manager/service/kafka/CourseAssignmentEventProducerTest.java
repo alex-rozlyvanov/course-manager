@@ -76,10 +76,12 @@ class CourseAssignmentEventProducerTest {
     }
 
     private CourseAssignmentEventAvro buildCourseAssignmentEvent(final String id) {
-        return CourseAssignmentEventAvro.newBuilder().setId(id).build();
-//        return CourseAssignmentEvent.builder()
-//                .id(UUID.fromString(id))
-//                .build();
+        return CourseAssignmentEventAvro.newBuilder()
+                .setId(id)
+                .setUserId("")
+                .setRole("")
+                .setCourseId("")
+                .build();
     }
 
     @Test

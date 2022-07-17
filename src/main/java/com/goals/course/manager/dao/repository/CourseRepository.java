@@ -12,16 +12,16 @@ import java.util.UUID;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, UUID> {
     @Query("""
-                SELECT c FROM Course c \s
-                LEFT JOIN CourseInstructor ci \s
-                ON c.id = ci.course.id WHERE ci.instructor.id = :instructorId
+            SELECT c FROM Course c \s
+            LEFT JOIN CourseInstructor ci \s
+            ON c.id = ci.course.id WHERE ci.instructor.id = :instructorId
             """)
     List<Course> findByInstructorId(@Param("instructorId") final UUID instructorId);
 
     @Query("""
-                SELECT c FROM Course c \s
-                LEFT JOIN CourseStudent cs \s
-                ON c.id = cs.course.id WHERE cs.student.id = :studentId
+            SELECT c FROM Course c \s
+            LEFT JOIN CourseStudent cs \s
+            ON c.id = cs.course.id WHERE cs.student.id = :studentId
             """)
     List<Course> findByStudentId(@Param("studentId") final UUID studentId);
 }

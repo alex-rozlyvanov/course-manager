@@ -36,12 +36,12 @@ public class CourseAssignmentEventProducer {
         final var future = kafkaTemplate.send(topicName, message);
 
         future.addCallback(new ListenableFutureCallback<>() {
-            @Override
+
             public void onSuccess(final SendResult<String, CourseAssignmentEventAvro> result) {
                 log.info("Sent message=[%s] with offset=[%d]".formatted(message, result.getRecordMetadata().offset()));
             }
 
-            @Override
+
             public void onFailure(final Throwable ex) {
                 log.info("Unable to send message=[%s] due to : %s".formatted(message, ex.getMessage()));
             }

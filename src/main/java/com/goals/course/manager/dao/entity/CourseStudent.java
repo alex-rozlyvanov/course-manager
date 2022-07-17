@@ -24,7 +24,7 @@ public class CourseStudent {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
