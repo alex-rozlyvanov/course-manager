@@ -21,7 +21,7 @@ public class CourseInstructor {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
